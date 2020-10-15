@@ -1,5 +1,45 @@
 # Given a Weather table, write a SQL query to find all dates’ Ids with higher temperature compared to its previous (yesterday’s) dates.
 
+Table: Weather
+
++---------------+---------+
+| Column Name   | Type    |
++---------------+---------+
+| id            | int     |
+| recordDate    | date    |
+| temperature   | int     |
++---------------+---------+
+id is the primary key for this table.
+This table contains information about the temperature in a certain day.
+ 
+
+Write an SQL query to find all dates' id with higher temperature compared to its previous dates (yesterday).
+
+Return the result table in any order.
+
+The query result format is in the following example:
+
+Weather
++----+------------+-------------+
+| id | recordDate | Temperature |
++----+------------+-------------+
+| 1  | 2015-01-01 | 10          |
+| 2  | 2015-01-02 | 25          |
+| 3  | 2015-01-03 | 20          |
+| 4  | 2015-01-04 | 30          |
++----+------------+-------------+
+
+Result table:
++----+
+| id |
++----+
+| 2  |
+| 4  |
++----+
+
+
+MySQL:
+
 select
  today.id 
 from
@@ -8,3 +48,10 @@ from
 where
  today.temperature > yesterday.temperature and
  datediff(today.RecordDate, yesterday.RecordDate) = 1;
+ 
+
+MS SQL:
+ 
+SELECT distinct today.id as id
+FROM Weather as today join Weather as yesterday on DATEADD(day, 1, yesterday.recordDate)=today.recordDate
+WHERE today.temperature > yesterday.temperature 
