@@ -1,0 +1,16 @@
+# Q: Write a SQL query to get the second highest salary from the Employee table.
+
+MS SQL:
+
+SELECT Salary 
+FROM Employee
+ORDER BY Salary DESC
+OFFSET 1 ROW
+FETCH 1 ROW ONLY
+
+MYSQL:
+SELECT
+IFNULL((SELECT DISTINCT Salary 
+FROM Employee
+ORDER BY Salary DESC
+LIMIT 1 OFFSET 1),NULL) AS SecondHighestSalary
