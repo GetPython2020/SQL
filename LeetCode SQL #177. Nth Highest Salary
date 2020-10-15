@@ -1,0 +1,7 @@
+# Q: Write a SQL query to get the nth highest salary from the Employee table
+
+SELECT DISTINCT Salary
+FROM Employee
+ORDER BY Salary DESC
+OFFSET @N -1 ROWS
+FETCH NEXT 1 ROW ONLY
