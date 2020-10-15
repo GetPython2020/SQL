@@ -1,0 +1,7 @@
+# Q: Several friends at a cinema ticket office would like to reserve consecutive available seats.
+#    Can you help to query all the consecutive available seats order by the seat_id using the following cinema table?
+
+SELECT DISTINCT a.seat_id AS seat_id
+FROM cinema AS a INNER JOIN cinema AS b ON abs(a.seat_id-b.seat_id)=1
+WHERE a.free=1 AND b.free=1
+ORDER BY a.seat_id
