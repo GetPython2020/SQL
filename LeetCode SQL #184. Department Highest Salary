@@ -1,0 +1,10 @@
+# Q: The Employee table holds all employees. Every employee has an Id, a salary, and there is also a column for the department Id.The Department table holds all departments of the company.
+# Write a SQL query to find employees who have the highest salary in each of the departments. 
+
+SELECT Department, Employee, Salary
+FROM (SELECT D.Name AS Department, E.Name AS Employee, E.Salary AS Salary , 
+      DENSE_RANK()OVER(PARTITION BY E.DepartmentId ORDER BY E.Salary DESC) RN
+     FROM Employee E
+     INNER JOIN Department D
+     ON E.DepartmentId = D.Id)
+WHERE RN=1
