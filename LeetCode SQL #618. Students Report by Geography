@@ -1,0 +1,48 @@
+A U.S graduate school has students from Asia, Europe and America. The students’ location information are stored in table student as below.
+
+name	continent
+Jack	America
+Pascal	Europe
+Xi	Asia
+Jane	America
+Pivot the continent column in this table so that each name is sorted alphabetically and displayed underneath its corresponding continent. 
+The output headers should be America, Asia and Europe respectively. It is guaranteed that the student number from America is no less than either Asia or Europe.
+For the sample input, the output is:
+
+America	Asia	Europe
+Jack	Xi	Pascal
+Jane		
+Follow-up: If it is unknown which continent has the most students, can you write a query to generate the student report?
+---------------------------------------------------------------------------------------------------------------------------------------------------
+select America, Asia, Europe
+from
+(select
+   row_number() over (partition by continent order by name) as asid
+   name as Asia
+   from student
+   where continent = 'Asia' ) as t1
+right join
+(select
+    row_number() over (partition by continent order by name) as amid
+    name as America
+    from student
+    where continent = 'America') as t2 on t1.asid=t2.amid
+left join
+(select
+    row_num() over (partition by continent order by name) as euid
+    name as Europe
+    from student
+    where continent = 'Europe') as t3 on t2.amid=t3.euid
+    
+------------------------------------------------------------------------------------------------
+select
+  (case when continent = 'America' then name else '' end) America,
+  (case when continent = 'Europe' then name else '' end) Europe,
+  (case when continent = 'Asia' then name else '' end) Asia
+from student
+
+---------------------------------------------------------------------------------------------------
+select [America],[Europe],[Asia]
+from (select name,continent from student) as D
+pivot(min(name) for continent in ([America],[Europe],[Asia]) ) as P
+   
